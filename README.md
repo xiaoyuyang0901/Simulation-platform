@@ -5,7 +5,7 @@
 1、简介
 OPTI是一个开源的MATLAB优化工具箱，相比MATLAB自带非线性优化求解函数fmincon，该优化器更加人性化,同时也有丰富的求解方法可供选择，后续的MPC求解将使用该工具箱完成求解。
 
-##2、下载链接链接
+2、下载链接链接
 https://www.inverseproblem.co.nz/OPTI/index.php/DL/DownloadOPTI
 GitHub源码下载链接
 https://github.com/jonathancurrie/OPTI
@@ -53,6 +53,6 @@ b.打开MATLAB，进入到文件夹所在路径
 c.点击opti_Install.m文件，并运行
 d.按照命令窗口的提示，选择‘Y’完成安装
 
-##5、示例
+5、示例
 https://www.inverseproblem.co.nz/OPTI/index.php/Examples/Examples
 带约束的非线性方程组求解
