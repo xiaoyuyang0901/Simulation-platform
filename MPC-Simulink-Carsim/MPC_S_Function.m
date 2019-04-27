@@ -61,25 +61,25 @@ function sys = mdlOutputs(t,x,u)
     dt = 0.1;
     v_ref = 10; 
 
-    x_start     = 0;                                         %����λ��
-    y_start     = x_start + NP;                              %����λ��
-    phi_start   = y_start + NP;                              %yaw�ĽǶȣ���X������ļн�
-    cte_start   = phi_start + NP;                            %λ�����
-    ephi_start  = cte_start + NP;                            %��̬���
-    delta_start = ephi_start + NP;                           %ǰ��ת��
+    x_start     = 0;                                         %横向位置
+    y_start     = x_start + NP;                              %纵向位置
+    phi_start   = y_start + NP;                              %yaw的角度，与X轴正向的夹角
+    cte_start   = phi_start + NP;                            %位置误差
+    ephi_start  = cte_start + NP;                            %姿态误差
+    delta_start = ephi_start + NP;                           %前轮转角
 
-    m = 6 * NP ;                                             %״̬�����Ϳ��Ʊ������ܸ���
+    m = 6 * NP ;                                             %状态变量和控制变量的总个数
     
     state_0 = u;    
-    nlcon = @(var)MPC_Nonlcon( var,state_0,NP,dt,v_ref );    %������Լ��
-    cl = zeros( 6*NP+1,1 );                                  %Լ�����½�
-    cu = zeros( 6*NP+1,1 );                                  %Լ���Ͻ�
+    nlcon = @(var)MPC_Nonlcon( var,state_0,NP,dt,v_ref );    %非线性约束
+    cl = zeros( 6*NP+1,1 );                                  %约束的下界
+    cu = zeros( 6*NP+1,1 );                                  %约束上界
     for i = (5*NP+1):6*NP
-        cl(i) = -0.45;                                       %��ǰ��ת������25��
+        cl(i) = -0.45;                                       %车前轮转角限制25°
         cu(i) =  0.45;
     end
-    state_intial = zeros(m,1);                               %��ʼ��
-    func  = @(var)MPC_Costfunction( var,NP,dt );             %��ʧ����
+    state_intial = zeros(m,1);                               %初始化
+    func  = @(var)MPC_Costfunction( var,NP,dt );             %损失函数
     % opts = optiset('solver','IPOPT','display','iter','maxiter',50,'maxtime',0.5);
     opts = optiset('solver','ipopt','maxiter',60,'maxtime',0.5);
     Opt = opti('fun',func,'nl',nlcon,cl,cu,'x0',state_intial,'options',opts);
@@ -89,12 +89,11 @@ function sys = mdlOutputs(t,x,u)
 
     
     result = zeros(2,1); 
-    result(1) = v_ref;                                        %������� 5m/s
-%     result(2) = A(delta_start + NC);                        %����Ż������ķ�����ת��
-    if exitflag < 0
+    result(1) = v_ref;                                        %输出车速 5m/s
+%     result(2) = A(delta_start + NC);                        %输出优化器求解的方向盘转角
         result(2) = 0;
     else
-        result(2) = A(delta_start + NC);                      %����Ż������ķ�����ת��
+        result(2) = A(delta_start + NC);                      %输出优化器求解的方向盘转角
     end
     sys = result;
     %ÿһ���Ŀ��ӻ���������������ʱ��
