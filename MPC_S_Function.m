@@ -1,3 +1,6 @@
+%===============================================================
+% MPCæ¨¡å—çš„S-Function
+%===============================================================
 function [sys,x0,str,ts] = MPC_S_Function(t,x,u,flag)
 
 switch flag
@@ -58,25 +61,25 @@ function sys = mdlOutputs(t,x,u)
     dt = 0.1;
     v_ref = 10; 
 
-    x_start     = 0;                                         %ºáÏòÎ»ÖÃ
-    y_start     = x_start + NP;                              %×İÏòÎ»ÖÃ
-    phi_start   = y_start + NP;                              %yawµÄ½Ç¶È£¬ÓëXÖáÕıÏòµÄ¼Ğ½Ç
-    cte_start   = phi_start + NP;                            %Î»ÖÃÎó²î
-    ephi_start  = cte_start + NP;                            %×ËÌ¬Îó²î
-    delta_start = ephi_start + NP;                           %Ç°ÂÖ×ª½Ç
+    x_start     = 0;                                         %ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    y_start     = x_start + NP;                              %ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    phi_start   = y_start + NP;                              %yawï¿½Ä½Ç¶È£ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼Ğ½ï¿½
+    cte_start   = phi_start + NP;                            %Î»ï¿½ï¿½ï¿½ï¿½ï¿½
+    ephi_start  = cte_start + NP;                            %ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½
+    delta_start = ephi_start + NP;                           %Ç°ï¿½ï¿½×ªï¿½ï¿½
 
-    m = 6 * NP ;                                             %×´Ì¬±äÁ¿ºÍ¿ØÖÆ±äÁ¿µÄ×Ü¸öÊı
+    m = 6 * NP ;                                             %×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ï¿½
     
     state_0 = u;    
-    nlcon = @(var)MPC_Nonlcon( var,state_0,NP,dt,v_ref );    %·ÇÏßĞÔÔ¼Êø
-    cl = zeros( 6*NP+1,1 );                                  %Ô¼ÊøµÄÏÂ½ç
-    cu = zeros( 6*NP+1,1 );                                  %Ô¼ÊøÉÏ½ç
+    nlcon = @(var)MPC_Nonlcon( var,state_0,NP,dt,v_ref );    %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
+    cl = zeros( 6*NP+1,1 );                                  %Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½
+    cu = zeros( 6*NP+1,1 );                                  %Ô¼ï¿½ï¿½ï¿½Ï½ï¿½
     for i = (5*NP+1):6*NP
-        cl(i) = -0.45;                                       %³µÇ°ÂÖ×ª½ÇÏŞÖÆ25¡ã
+        cl(i) = -0.45;                                       %ï¿½ï¿½Ç°ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½25ï¿½ï¿½
         cu(i) =  0.45;
     end
-    state_intial = zeros(m,1);                               %³õÊ¼»¯
-    func  = @(var)MPC_Costfunction( var,NP,dt );             %ËğÊ§º¯Êı
+    state_intial = zeros(m,1);                               %ï¿½ï¿½Ê¼ï¿½ï¿½
+    func  = @(var)MPC_Costfunction( var,NP,dt );             %ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½
     % opts = optiset('solver','IPOPT','display','iter','maxiter',50,'maxtime',0.5);
     opts = optiset('solver','ipopt','maxiter',60,'maxtime',0.5);
     Opt = opti('fun',func,'nl',nlcon,cl,cu,'x0',state_intial,'options',opts);
@@ -86,15 +89,15 @@ function sys = mdlOutputs(t,x,u)
 
     
     result = zeros(2,1); 
-    result(1) = v_ref;                                        %Êä³ö³µËÙ 5m/s
-%     result(2) = A(delta_start + NC);                        %Êä³öÓÅ»¯Æ÷Çó½âµÄ·½ÏòÅÌ×ª½Ç
+    result(1) = v_ref;                                        %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5m/s
+%     result(2) = A(delta_start + NC);                        %ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
     if exitflag < 0
         result(2) = 0;
     else
-        result(2) = A(delta_start + NC);                      %Êä³öÓÅ»¯Æ÷Çó½âµÄ·½ÏòÅÌ×ª½Ç
+        result(2) = A(delta_start + NC);                      %ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
     end
     sys = result;
-    %Ã¿Ò»²½µÄ¿ÉÊÓ»¯£¬µ«»áÔö¼ÓÔËËãÊ±³¤
+    %Ã¿Ò»ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 %     plot(  A(1:NP),A(NP+1:2*NP),'-.p'  );
 %     axis ([0 100 -30 30]);
 %     axis equal;
