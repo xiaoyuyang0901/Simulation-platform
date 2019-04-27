@@ -1,0 +1,1 @@
+socket_simulink_carsim.mdl 文件为两台 PC 的信息通过socket通信方式进行信息交互的simulink模型
