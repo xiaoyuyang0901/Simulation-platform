@@ -25,7 +25,7 @@ function cost = MPC_Costfunction(var,NP,dt)
         delta_change = delta_change + ( var( delta_start+i+1 ) - var( delta_start+i ) )^2;
     end    
     
-    % �����ͷ����Ȩ����Ҫ���ĵĵ��Σ��ͷ��������󽵵�ʵʱ��
+    % 各个惩罚项的权重需要精心的调参，惩罚项过多会大大降低实时性
     cost = 8*cte + 0 * ephi + 0*delta + 60*delta_change;
     
     
