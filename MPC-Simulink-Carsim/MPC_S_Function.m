@@ -96,7 +96,7 @@ function sys = mdlOutputs(t,x,u)
         result(2) = A(delta_start + NC);                      %输出优化器求解的方向盘转角
     end
     sys = result;
-    %ÿһ���Ŀ��ӻ���������������ʱ��
+    %每一步的可视化，但会增加运算时长
 %     plot(  A(1:NP),A(NP+1:2*NP),'-.p'  );
 %     axis ([0 100 -30 30]);
 %     axis equal;
