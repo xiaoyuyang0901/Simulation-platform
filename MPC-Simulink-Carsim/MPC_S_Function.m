@@ -91,6 +91,7 @@ function sys = mdlOutputs(t,x,u)
     result = zeros(2,1); 
     result(1) = v_ref;                                        %输出车速 5m/s
 %     result(2) = A(delta_start + NC);                        %输出优化器求解的方向盘转角
+    if exitflag < 0
         result(2) = 0;
     else
         result(2) = A(delta_start + NC);                      %输出优化器求解的方向盘转角
